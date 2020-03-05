@@ -2,3 +2,6 @@ Django>=2.0,<3.0 #Django
 psycopg2>=2.7,<3.0  # Postgresql adapter
 djangorestframework # Django rest framework , the most powerful  and flexible toolkit for building Web APIs
 drf-yasg # Api docs Viewer
+pytest #Python tests framework
+pytest-django #Pytest extensions for Django
+factory-boy #Factories for easy test data generation.

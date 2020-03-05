@@ -11,7 +11,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TeamSerializer(serializers.HyperlinkedModelSerializer):
-    employees = EmployeeSerializer(many=True, read_only=False)
+    employees = EmployeeSerializer(many=True, read_only=False, required=False)
     url = serializers.HyperlinkedIdentityField(view_name="mykiapp:team-detail")
 
     class Meta:
@@ -40,6 +40,7 @@ class ItemEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeItemAccess
         fields = ['item', 'employee', 'access_level']
+        
 
 
 class ItemTeamSerializer(serializers.ModelSerializer):

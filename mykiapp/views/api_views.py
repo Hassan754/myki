@@ -22,26 +22,28 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST', 'PUT'], serializer_class=ItemEmployeeSerializer)
     def edit_create_item_permissions(self, request, pk=None):
         permission = EmployeeItemAccess.objects.filter(employee_id=pk, item=request.data['item']).first()
-        serializer = self.serializer_class(permission, data=request.data, context={"request": request})
+        data = {**request.data, "employee": pk}
+        serializer = self.serializer_class(permission, data=data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], serializer_class=ItemEmployeeSerializer)
-    def delete__item_permission(self, request, pk=None):
+    def delete_item_permission(self, request, pk=None):
         permission = EmployeeItemAccess.objects.filter(employee_id=pk, item=request.data['item']).delete()
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST', 'PUT'], serializer_class=FolderEmployeeSerializer)
     def edit_create_folder_permissions(self, request, pk=None):
         permission = EmployeeFolderAccess.objects.filter(employee_id=pk, folder=request.data['folder']).first()
-        serializer = self.serializer_class(permission, data=request.data, context={"request": request})
+        data = {**request.data, "employee": pk}
+        serializer = self.serializer_class(permission, data=data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], serializer_class=FolderEmployeeSerializer)
-    def delete__folder_permission(self, request, pk=None):
+    def delete_folder_permission(self, request, pk=None):
         permission = EmployeeFolderAccess.objects.filter(employee_id=pk, item=request.data['folder']).delete()
         return Response(status=status.HTTP_200_OK)
 
@@ -69,7 +71,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], serializer_class=ItemTeamSerializer)
-    def delete__item_permission(self, request, pk=None):
+    def delete_item_permission(self, request, pk=None):
         permission = TeamItemAccess.objects.filter(team_id=pk, item=request.data['item']).delete()
         return Response(status=status.HTTP_200_OK)
 
@@ -82,7 +84,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], serializer_class=FolderTeamSerializer)
-    def delete__folder_permission(self, request, pk=None):
+    def delete_folder_permission(self, request, pk=None):
         permission = TeamFolderAccess.objects.filter(employee_id=pk, item=request.data['folder']).delete()
         return Response(status=status.HTTP_200_OK)
 

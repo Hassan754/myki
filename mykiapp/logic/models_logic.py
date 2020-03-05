@@ -27,11 +27,12 @@ def get_all_user_permissions(user):
     :return:
     """
     permissions = get_permissions(user)
-    through = "Direct"
+
     for team in user.teams.prefetch_related('items', 'folders').all():
+        through = f"Team {team.name}"
         for item_access in team.items.select_related('item'):
             permissions[str(item_access.item_id)] = {"item": item_access.item, "access_level": item_access.access_level,
-                                                     "through": through}
+                                                     "through":through }
 
         for folder_access in team.folders.select_related('folder').prefetch_related('folder__items'):
             for item in folder_access.folder.items.all():
